@@ -82,7 +82,11 @@ export function useImageQueue() {
       const next = index + direction;
       if (index < 0 || next < 0 || next >= prev.length) return prev;
       const copy = [...prev];
-      [copy[index], copy[next]] = [copy[next], copy[index]];
+      const current = copy[index];
+      const neighbour = copy[next];
+      if (!current || !neighbour) return prev;
+      copy[index] = neighbour;
+      copy[next] = current;
       return copy;
     });
   }, []);
@@ -93,6 +97,7 @@ export function useImageQueue() {
       if (from < 0 || targetIndex < 0 || targetIndex >= prev.length) return prev;
       const copy = [...prev];
       const [moved] = copy.splice(from, 1);
+      if (!moved) return prev;
       copy.splice(targetIndex, 0, moved);
       return copy;
     });

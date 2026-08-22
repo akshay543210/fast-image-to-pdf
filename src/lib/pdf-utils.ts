@@ -35,7 +35,9 @@ export async function generatePdf(
   doc.setCreationDate(new Date());
 
   for (let i = 0; i < items.length; i++) {
-    const norm = await normalizeImage(items[i], settings.quality);
+    const item = items[i];
+    if (!item) continue;
+    const norm = await normalizeImage(item, settings.quality);
     const image =
       norm.kind === "png"
         ? await doc.embedPng(norm.bytes)

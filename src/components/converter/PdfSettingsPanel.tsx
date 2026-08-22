@@ -100,7 +100,9 @@ export function PdfSettingsPanel({ settings, onChange, disabled = false }: PdfSe
             max={100}
             step={5}
             value={[settings.quality * 100]}
-            onValueChange={([value]) => onChange({ quality: value / 100 })}
+            onValueChange={([value]) => {
+              if (typeof value === "number") onChange({ quality: value / 100 });
+            }}
             aria-label="JPEG quality percentage"
           />
           <p className="text-xs text-muted-foreground">
