@@ -10,33 +10,53 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as JpgToPdfRouteImport } from './routes/jpg-to-pdf'
+import { Route as PngToPdfRouteImport } from './routes/png-to-pdf'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const JpgToPdfRoute = JpgToPdfRouteImport.update({
+  id: '/jpg-to-pdf',
+  path: '/jpg-to-pdf',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const PngToPdfRoute = PngToPdfRouteImport.update({
+  id: '/png-to-pdf',
+  path: '/png-to-pdf',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/jpg-to-pdf': typeof JpgToPdfRoute
+  '/png-to-pdf': typeof PngToPdfRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/jpg-to-pdf': typeof JpgToPdfRoute
+  '/png-to-pdf': typeof PngToPdfRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/jpg-to-pdf': typeof JpgToPdfRoute
+  '/png-to-pdf': typeof PngToPdfRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/'
+  fullPaths: '/' | '/jpg-to-pdf' | '/png-to-pdf'
   fileRoutesByTo: FileRoutesByTo
-  to: '/'
-  id: '__root__' | '/'
+  to: '/' | '/jpg-to-pdf' | '/png-to-pdf'
+  id: '__root__' | '/' | '/jpg-to-pdf' | '/png-to-pdf'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  JpgToPdfRoute: typeof JpgToPdfRoute
+  PngToPdfRoute: typeof PngToPdfRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -48,11 +68,27 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/jpg-to-pdf': {
+      id: '/jpg-to-pdf'
+      path: '/jpg-to-pdf'
+      fullPath: '/jpg-to-pdf'
+      preLoaderRoute: typeof JpgToPdfRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/png-to-pdf': {
+      id: '/png-to-pdf'
+      path: '/png-to-pdf'
+      fullPath: '/png-to-pdf'
+      preLoaderRoute: typeof PngToPdfRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  JpgToPdfRoute: JpgToPdfRoute,
+  PngToPdfRoute: PngToPdfRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
