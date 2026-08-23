@@ -39,7 +39,7 @@ export interface PdfSettings {
 export const DEFAULT_SETTINGS: PdfSettings = {
   pageSize: "a4",
   orientation: "auto",
-  margin: "small",
+  margin: "none",
   quality: 0.85,
 };
 
