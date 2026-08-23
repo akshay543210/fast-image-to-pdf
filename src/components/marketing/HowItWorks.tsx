@@ -18,12 +18,12 @@ const STEPS = [
   },
 ] as const;
 
-export function HowItWorks() {
+export function HowItWorks({ heading = "Three steps. Ten seconds." }: { heading?: string }) {
   return (
     <section aria-labelledby="how-it-works" className="border-t-2 border-ink/70 bg-secondary/50">
       <div className="mx-auto max-w-5xl px-4 py-14 sm:px-6">
         <h2 id="how-it-works" className="text-center text-2xl font-bold sm:text-3xl">
-          Three steps. Ten seconds.
+          {heading}
         </h2>
         <ol className="mt-10 grid gap-6 sm:grid-cols-3">
           {STEPS.map((step, index) => (

@@ -22,6 +22,9 @@ export function SiteFooter() {
             <Link to="/png-to-pdf" className="text-sm text-muted-foreground hover:text-foreground">
               PNG to PDF
             </Link>
+            <Link to="/webp-to-pdf" className="text-sm text-muted-foreground hover:text-foreground">
+              WebP to PDF
+            </Link>
           </nav>
         </div>
         <p className="mt-8 text-center font-mono text-xs uppercase tracking-wider text-muted-foreground">

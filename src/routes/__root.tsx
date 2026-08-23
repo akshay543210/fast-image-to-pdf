@@ -12,6 +12,7 @@ import { Toaster } from "@/components/ui/sonner";
 
 import appCss from "../styles.css?url";
 import { reportLovableError } from "../lib/lovable-error-reporting";
+import { SITE_NAME, SITE_URL } from "@/lib/seo";
 
 function NotFoundComponent() {
   return (
@@ -78,19 +79,21 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { title: "Image to PDF Maker" },
+      { title: "ImageToPDF — Free Image to PDF Converter" },
       {
         name: "description",
         content:
           "Convert images to PDF for free, right in your browser. No uploads, no sign-up — your files never leave your device.",
       },
-      { property: "og:site_name", content: "Image to PDF Maker" },
+      { property: "og:site_name", content: SITE_NAME },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
     ],
     links: [
       { rel: "stylesheet", href: appCss },
-      { rel: "icon", href: "/favicon.ico", type: "image/x-icon" },
+      { rel: "icon", type: "image/svg+xml", href: "/favicon.svg" },
+      { rel: "icon", type: "image/png", href: "/favicon.png" },
+      { rel: "apple-touch-icon", href: "/apple-touch-icon.png" },
       { rel: "preconnect", href: "https://fonts.googleapis.com" },
       { rel: "preconnect", href: "https://fonts.gstatic.com", crossOrigin: "anonymous" },
       {
@@ -103,9 +106,19 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
         type: "application/ld+json",
         children: JSON.stringify({
           "@context": "https://schema.org",
+          "@type": "Organization",
+          name: SITE_NAME,
+          url: SITE_URL,
+          logo: `${SITE_URL}/favicon.svg`,
+        }),
+      },
+      {
+        type: "application/ld+json",
+        children: JSON.stringify({
+          "@context": "https://schema.org",
           "@type": "WebSite",
-          name: "Image to PDF Maker",
-          url: "/",
+          name: SITE_NAME,
+          url: SITE_URL,
         }),
       },
     ],

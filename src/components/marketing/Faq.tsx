@@ -5,7 +5,12 @@ import {
   AccordionTrigger,
 } from "@/components/ui/accordion";
 
-export const FAQ_ITEMS = [
+export interface FaqItem {
+  question: string;
+  answer: string;
+}
+
+export const FAQ_ITEMS: readonly FaqItem[] = [
   {
     question: "Is this image to PDF converter really free?",
     answer:
@@ -36,17 +41,23 @@ export const FAQ_ITEMS = [
     answer:
       "Barely. Images are kept at up to 2000 px on the longest edge — more than enough for crisp A4 or Letter prints — and you can raise the JPG quality slider to 100% for maximum fidelity.",
   },
-] as const;
+];
 
-export function Faq() {
+export function Faq({
+  items = FAQ_ITEMS,
+  heading = "Frequently asked questions",
+}: {
+  items?: readonly FaqItem[];
+  heading?: string;
+}) {
   return (
     <section aria-labelledby="faq-heading" className="border-t-2 border-ink/70">
       <div className="mx-auto max-w-3xl px-4 py-14 sm:px-6">
         <h2 id="faq-heading" className="text-center text-2xl font-bold sm:text-3xl">
-          Frequently asked questions
+          {heading}
         </h2>
         <Accordion type="single" collapsible className="mt-8">
-          {FAQ_ITEMS.map((item, index) => (
+          {items.map((item, index) => (
             <AccordionItem key={item.question} value={`faq-${index}`}>
               <AccordionTrigger className="text-left font-display text-base font-semibold">
                 {item.question}

@@ -18,7 +18,7 @@ const POINTS = [
   },
 ] as const;
 
-export function PrivacyNote() {
+export function PrivacyNote({ heading = "Your photos stay yours" }: { heading?: string }) {
   return (
     <section aria-labelledby="privacy-heading" className="border-t-2 border-ink/70">
       <div className="mx-auto max-w-5xl px-4 py-14 sm:px-6">
@@ -27,7 +27,7 @@ export function PrivacyNote() {
             id="privacy-heading"
             className="text-center text-2xl font-bold text-primary-foreground sm:text-3xl"
           >
-            Your photos stay yours
+            {heading}
           </h2>
           <p className="mx-auto mt-3 max-w-xl text-center text-sm text-primary-foreground/85 sm:text-base">
             Most converters upload your images to a server. This one doesn't — the entire

@@ -1,10 +1,13 @@
 import { Link } from "@tanstack/react-router";
 import { FileImage } from "lucide-react";
+import { cn } from "@/lib/utils";
 
 const NAV_LINKS = [
-  { to: "/", label: "Image to PDF" },
-  { to: "/jpg-to-pdf", label: "JPG to PDF" },
-  { to: "/png-to-pdf", label: "PNG to PDF" },
+  // The logo already links home, so hide this duplicate on small screens to prevent overflow.
+  { to: "/", label: "Image to PDF", className: "hidden min-[560px]:inline-block" },
+  { to: "/jpg-to-pdf", label: "JPG to PDF", className: "" },
+  { to: "/png-to-pdf", label: "PNG to PDF", className: "" },
+  { to: "/webp-to-pdf", label: "WebP to PDF", className: "" },
 ] as const;
 
 export function SiteHeader() {
@@ -30,7 +33,10 @@ export function SiteHeader() {
               key={link.to}
               to={link.to}
               activeOptions={{ exact: true }}
-              className="rounded-md px-2 py-1.5 font-mono text-xs uppercase tracking-wider text-muted-foreground transition-colors hover:text-foreground sm:px-3 sm:text-sm sm:normal-case sm:tracking-normal sm:font-body sm:font-medium"
+              className={cn(
+                "rounded-md px-2 py-1.5 font-mono text-xs uppercase tracking-wider text-muted-foreground transition-colors hover:text-foreground sm:px-3 sm:text-sm sm:normal-case sm:tracking-normal sm:font-body sm:font-medium",
+                link.className,
+              )}
               activeProps={{ className: "text-primary font-semibold" }}
             >
               {link.label}

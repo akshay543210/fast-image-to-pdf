@@ -1,13 +1,17 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { ImageToPdfTool } from "@/components/converter/ImageToPdfTool";
 import { SiteHeader } from "@/components/marketing/SiteHeader";
+import { Breadcrumbs } from "@/components/marketing/Breadcrumbs";
 import { Hero } from "@/components/marketing/Hero";
 import { HowItWorks } from "@/components/marketing/HowItWorks";
 import { PrivacyNote } from "@/components/marketing/PrivacyNote";
-import { Faq } from "@/components/marketing/Faq";
+import { Faq, FAQ_ITEMS } from "@/components/marketing/Faq";
+import { RelatedConverters, CONVERTER_LINKS } from "@/components/marketing/RelatedConverters";
 import { SiteFooter } from "@/components/marketing/SiteFooter";
+import { OG_IMAGE, SITE_URL } from "@/lib/seo";
 
-const TITLE = "JPG to PDF Converter — Free & Private, No Upload";
+const PATH = "/jpg-to-pdf";
+const TITLE = "JPG to PDF Converter — Free & Private | ImageToPDF";
 const DESCRIPTION =
   "Convert JPG photos to PDF online for free. Combine multiple JPGs into one PDF, reorder and rotate pages — processed in your browser, never uploaded.";
 
@@ -18,20 +22,49 @@ export const Route = createFileRoute("/jpg-to-pdf")({
       { name: "description", content: DESCRIPTION },
       { property: "og:title", content: TITLE },
       { property: "og:description", content: DESCRIPTION },
-      { property: "og:url", content: "/jpg-to-pdf" },
+      { property: "og:url", content: `${SITE_URL}${PATH}` },
+      { property: "og:image", content: OG_IMAGE },
       { name: "twitter:title", content: TITLE },
       { name: "twitter:description", content: DESCRIPTION },
+      { name: "twitter:image", content: OG_IMAGE },
     ],
-    links: [{ rel: "canonical", href: "/jpg-to-pdf" }],
+    links: [{ rel: "canonical", href: `${SITE_URL}${PATH}` }],
     scripts: [
+      {
+        type: "application/ld+json",
+        children: JSON.stringify({
+          "@context": "https://schema.org",
+          "@type": "WebApplication",
+          name: "JPG to PDF Converter — ImageToPDF",
+          applicationCategory: "UtilitiesApplication",
+          operatingSystem: "Any (web browser)",
+          description: DESCRIPTION,
+          url: `${SITE_URL}${PATH}`,
+          offers: { "@type": "Offer", price: "0", priceCurrency: "USD" },
+          featureList:
+            "Convert JPG photos to PDF; combine multiple JPGs into one PDF; reorder and rotate pages; adjustable JPG quality; no upload — all processing happens in the browser",
+        }),
+      },
+      {
+        type: "application/ld+json",
+        children: JSON.stringify({
+          "@context": "https://schema.org",
+          "@type": "FAQPage",
+          mainEntity: FAQ_ITEMS.map((item) => ({
+            "@type": "Question",
+            name: item.question,
+            acceptedAnswer: { "@type": "Answer", text: item.answer },
+          })),
+        }),
+      },
       {
         type: "application/ld+json",
         children: JSON.stringify({
           "@context": "https://schema.org",
           "@type": "BreadcrumbList",
           itemListElement: [
-            { "@type": "ListItem", position: 1, name: "Image to PDF Maker", item: "/" },
-            { "@type": "ListItem", position: 2, name: "JPG to PDF", item: "/jpg-to-pdf" },
+            { "@type": "ListItem", position: 1, name: "ImageToPDF", item: `${SITE_URL}/` },
+            { "@type": "ListItem", position: 2, name: "JPG to PDF", item: `${SITE_URL}${PATH}` },
           ],
         }),
       },
@@ -45,6 +78,7 @@ function JpgToPdfPage() {
     <div className="flex min-h-screen flex-col">
       <SiteHeader />
       <main className="flex-1">
+        <Breadcrumbs items={[{ label: "Home", to: "/" }, { label: "JPG to PDF" }]} />
         <Hero
           title={
             <>
@@ -87,6 +121,7 @@ function JpgToPdfPage() {
         <HowItWorks />
         <PrivacyNote />
         <Faq />
+        <RelatedConverters links={CONVERTER_LINKS.filter((link) => link.to !== PATH)} />
       </main>
       <SiteFooter />
     </div>

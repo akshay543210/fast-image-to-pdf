@@ -1,13 +1,17 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { ImageToPdfTool } from "@/components/converter/ImageToPdfTool";
 import { SiteHeader } from "@/components/marketing/SiteHeader";
+import { Breadcrumbs } from "@/components/marketing/Breadcrumbs";
 import { Hero } from "@/components/marketing/Hero";
 import { HowItWorks } from "@/components/marketing/HowItWorks";
 import { PrivacyNote } from "@/components/marketing/PrivacyNote";
-import { Faq } from "@/components/marketing/Faq";
+import { Faq, FAQ_ITEMS } from "@/components/marketing/Faq";
+import { RelatedConverters, CONVERTER_LINKS } from "@/components/marketing/RelatedConverters";
 import { SiteFooter } from "@/components/marketing/SiteFooter";
+import { OG_IMAGE, SITE_URL } from "@/lib/seo";
 
-const TITLE = "PNG to PDF Converter — Free & Private, No Upload";
+const PATH = "/png-to-pdf";
+const TITLE = "PNG to PDF Converter — Free & Private | ImageToPDF";
 const DESCRIPTION =
   "Convert PNG images to PDF online for free. Lossless quality, transparency preserved, multiple PNGs in one PDF — processed in your browser, never uploaded.";
 
@@ -18,20 +22,49 @@ export const Route = createFileRoute("/png-to-pdf")({
       { name: "description", content: DESCRIPTION },
       { property: "og:title", content: TITLE },
       { property: "og:description", content: DESCRIPTION },
-      { property: "og:url", content: "/png-to-pdf" },
+      { property: "og:url", content: `${SITE_URL}${PATH}` },
+      { property: "og:image", content: OG_IMAGE },
       { name: "twitter:title", content: TITLE },
       { name: "twitter:description", content: DESCRIPTION },
+      { name: "twitter:image", content: OG_IMAGE },
     ],
-    links: [{ rel: "canonical", href: "/png-to-pdf" }],
+    links: [{ rel: "canonical", href: `${SITE_URL}${PATH}` }],
     scripts: [
+      {
+        type: "application/ld+json",
+        children: JSON.stringify({
+          "@context": "https://schema.org",
+          "@type": "WebApplication",
+          name: "PNG to PDF Converter — ImageToPDF",
+          applicationCategory: "UtilitiesApplication",
+          operatingSystem: "Any (web browser)",
+          description: DESCRIPTION,
+          url: `${SITE_URL}${PATH}`,
+          offers: { "@type": "Offer", price: "0", priceCurrency: "USD" },
+          featureList:
+            "Convert PNG images to PDF losslessly; preserve sharp text and transparency; combine multiple PNGs into one PDF; no upload — all processing happens in the browser",
+        }),
+      },
+      {
+        type: "application/ld+json",
+        children: JSON.stringify({
+          "@context": "https://schema.org",
+          "@type": "FAQPage",
+          mainEntity: FAQ_ITEMS.map((item) => ({
+            "@type": "Question",
+            name: item.question,
+            acceptedAnswer: { "@type": "Answer", text: item.answer },
+          })),
+        }),
+      },
       {
         type: "application/ld+json",
         children: JSON.stringify({
           "@context": "https://schema.org",
           "@type": "BreadcrumbList",
           itemListElement: [
-            { "@type": "ListItem", position: 1, name: "Image to PDF Maker", item: "/" },
-            { "@type": "ListItem", position: 2, name: "PNG to PDF", item: "/png-to-pdf" },
+            { "@type": "ListItem", position: 1, name: "ImageToPDF", item: `${SITE_URL}/` },
+            { "@type": "ListItem", position: 2, name: "PNG to PDF", item: `${SITE_URL}${PATH}` },
           ],
         }),
       },
@@ -45,6 +78,7 @@ function PngToPdfPage() {
     <div className="flex min-h-screen flex-col">
       <SiteHeader />
       <main className="flex-1">
+        <Breadcrumbs items={[{ label: "Home", to: "/" }, { label: "PNG to PDF" }]} />
         <Hero
           title={
             <>
@@ -85,6 +119,7 @@ function PngToPdfPage() {
         <HowItWorks />
         <PrivacyNote />
         <Faq />
+        <RelatedConverters links={CONVERTER_LINKS.filter((link) => link.to !== PATH)} />
       </main>
       <SiteFooter />
     </div>
