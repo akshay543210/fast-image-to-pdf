@@ -13,4 +13,4 @@ Allow: /
 User-agent: *
 Allow: /
 
-Sitemap: https://fast-image-to-pdf.lovable.app/sitemap.xml
+Sitemap: https://imagetopdfmaker.com/sitemap.xml

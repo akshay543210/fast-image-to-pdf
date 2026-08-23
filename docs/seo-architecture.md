@@ -1,6 +1,6 @@
 # SEO Architecture — Image to PDF Maker
 
-Status: **Live — `/`, `/jpg-to-pdf`, `/png-to-pdf`, `/webp-to-pdf` shipped to spec.** Brand: ImageToPDF. Domain: https://fast-image-to-pdf.lovable.app (single source: `src/lib/seo.ts`). Pending: HEIC decode + `/heic-to-pdf`, `/blog/` guides.
+Status: **Live — `/`, `/jpg-to-pdf`, `/png-to-pdf`, `/webp-to-pdf` shipped to spec.** Brand: ImageToPDF. Domain: https://imagetopdfmaker.com (single source: `src/lib/seo.ts`). Pending: HEIC decode + `/heic-to-pdf`, `/blog/` guides.
 Audience: whoever implements the next pages. Follow this doc before adding any route.
 
 ---
@@ -122,7 +122,7 @@ No skipping levels, exactly one H1, H2 sections must be genuinely different per 
 
 ## 7. Canonical strategy
 
-- Every page: **self-referencing absolute** canonical on the project domain (`https://fast-image-to-pdf.lovable.app/<path>`). Live on all routes; each route's `og:url` matches its canonical exactly.
+- Every page: **self-referencing absolute** canonical on the project domain (`https://imagetopdfmaker.com/<path>`). Live on all routes; each route's `og:url` matches its canonical exactly.
 - No cross-page canonicals — we cut the duplicate pages instead of canonicalizing them.
 - No query-param states of the tool produce URLs (all state is in-memory), so no parameter canonicalization is needed. Keep it that way: never move queue state into the URL without revisiting this.
 
@@ -180,14 +180,14 @@ Rules: schema must mirror visible content exactly; no FAQPage without a rendered
 
 ## 11. Sitemap architecture
 
-Live: `src/routes/sitemap[.]xml.ts` server route at `/sitemap.xml` — one `<url>` per indexable page (currently 4), absolute `https://fast-image-to-pdf.lovable.app` locs, **no `<lastmod>`** without real per-page content-change timestamps (never build-time stamps). `public/robots.txt` carries the `Sitemap:` directive. The old static `public/sitemap.xml` was removed when the server route shipped. When guides exist, add their entries to the route's `entries` array — no sitemap index until 50+ URLs.
+Live: `src/routes/sitemap[.]xml.ts` server route at `/sitemap.xml` — one `<url>` per indexable page (currently 4), absolute `https://imagetopdfmaker.com` locs, **no `<lastmod>`** without real per-page content-change timestamps (never build-time stamps). `public/robots.txt` carries the `Sitemap:` directive. The old static `public/sitemap.xml` was removed when the server route shipped. When guides exist, add their entries to the route's `entries` array — no sitemap index until 50+ URLs.
 
 ## 12. robots.txt requirements
 
 Current file is fine (`Allow: /` for all major bots + wildcard). Requirements going forward:
 
 - Keep `Allow: /` — every route is public and indexable.
-- `Sitemap: https://fast-image-to-pdf.lovable.app/sitemap.xml` directive is live (domain is set).
+- `Sitemap: https://imagetopdfmaker.com/sitemap.xml` directive is live (domain is set).
 - If staging/preview ever needs blocking, do it via `noindex` on the environment, not a wildcard `Disallow` here.
 
 ## 13. Anti-doorway rules (permanent)
