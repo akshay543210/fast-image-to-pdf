@@ -1,6 +1,6 @@
 # SEO Architecture — Image to PDF Maker
 
-Status: **Design — approved direction, pending page builds.**
+Status: **Live — `/`, `/jpg-to-pdf`, `/png-to-pdf`, `/webp-to-pdf` shipped to spec.** Brand: ImageToPDF. Domain: https://fast-image-to-pdf.lovable.app (single source: `src/lib/seo.ts`). Pending: HEIC decode + `/heic-to-pdf`, `/blog/` guides.
 Audience: whoever implements the next pages. Follow this doc before adding any route.
 
 ---
@@ -32,7 +32,7 @@ Audience: whoever implements the next pages. Follow this doc before adding any r
 | `/image-to-pdf` | **Cut** | Identical intent to `/`. Two pages = self-cannibalization. If ever created, 301 → `/`. |
 | `/jpg-to-pdf` | **Keep** (exists) | Largest keyword in the cluster. |
 | `/png-to-pdf` | **Keep** (exists) | Second largest, winnable (KD 46). |
-| `/webp-to-pdf` | **Build** | KD 23, genuine differentiated story (WebP files downloaded from the web are awkward to share/print). Tool already accepts WebP. |
+| `/webp-to-pdf` | **Shipped** | KD 23, genuine differentiated story (WebP files downloaded from the web are awkward to share/print). Live with unique explainer, FAQ, schema and related-converters module. |
 | `/heic-to-pdf` | **Build — gated on engineering** | 40.5k/mo at KD 36 is the biggest growth opportunity. But browsers can't decode HEIC natively: ship a WASM decoder (e.g. `heic-to` / libheif-js, dynamically imported like pdf-lib) *before* publishing the page. Never publish a landing page for a format the tool rejects. |
 | `/photo-to-pdf` | **Cut** | Synonym intent of `/`. Google clusters it with "image to pdf". A separate page is a doorway page. Cover "photo/picture" phrasing in homepage copy + guides. |
 | `/picture-to-pdf` | **Cut** | Same as above. |
@@ -59,13 +59,13 @@ Flat structure, no `/tools/` or `/converters/` prefix folders yet — four tool 
 
 Pattern: `<Primary keyword> — <differentiator> | <brand>`. Under 60 chars. One keyword per page; modifiers ("free", "online", "no upload") carry the long tail.
 
-| Page | Title |
+| Page | Title (shipped) |
 |---|---|
-| `/` | Image to PDF Converter — Free, Private, No Upload *(current, keep)* |
-| `/jpg-to-pdf` | JPG to PDF Converter — Free & Private, No Upload *(current, keep)* |
-| `/png-to-pdf` | PNG to PDF Converter — Free & Private, No Upload *(current, keep)* |
-| `/webp-to-pdf` | WebP to PDF Converter — Free, No Upload, No Signup |
-| `/heic-to-pdf` | HEIC to PDF Converter — Free iPhone Photo to PDF |
+| `/` | Image to PDF Converter — Free & Private \| ImageToPDF (55) |
+| `/jpg-to-pdf` | JPG to PDF Converter — Free & Private \| ImageToPDF (52) |
+| `/png-to-pdf` | PNG to PDF Converter — Free & Private \| ImageToPDF (52) |
+| `/webp-to-pdf` | WebP to PDF Converter — Free, No Upload \| ImageToPDF (53) |
+| `/heic-to-pdf` | HEIC to PDF Converter — Free iPhone Photo to PDF *(planned)* |
 
 Rules:
 - Never repeat the exact title across pages (synonym pages were cut partly to make this natural).
@@ -122,7 +122,7 @@ No skipping levels, exactly one H1, H2 sections must be genuinely different per 
 
 ## 7. Canonical strategy
 
-- Every page: **self-referencing** canonical, relative path until a domain is set (`<link rel="canonical" href="/jpg-to-pdf">`). Already implemented on the three live routes.
+- Every page: **self-referencing absolute** canonical on the project domain (`https://fast-image-to-pdf.lovable.app/<path>`). Live on all routes; each route's `og:url` matches its canonical exactly.
 - No cross-page canonicals — we cut the duplicate pages instead of canonicalizing them.
 - No query-param states of the tool produce URLs (all state is in-memory), so no parameter canonicalization is needed. Keep it that way: never move queue state into the URL without revisiting this.
 
@@ -180,18 +180,14 @@ Rules: schema must mirror visible content exactly; no FAQPage without a rendered
 
 ## 11. Sitemap architecture
 
-Current: static `public/sitemap.xml`, 3 entries, relative `BASE_URL=""` placeholder — correct for now.
-
-Target: one sitemap at `/sitemap.xml`, one `<url>` per indexable page above, **no `<lastmod>`** unless we have a real per-page content-change timestamp (never build-time stamps). When guides exist, they join the same sitemap — no sitemap index until 50+ URLs.
-
-Migration note: at guide-launch time, replace the static file with the `src/routes/sitemap[.]xml.ts` server route so entries stay in sync with the route tree (confirm before replacing the static mechanism).
+Live: `src/routes/sitemap[.]xml.ts` server route at `/sitemap.xml` — one `<url>` per indexable page (currently 4), absolute `https://fast-image-to-pdf.lovable.app` locs, **no `<lastmod>`** without real per-page content-change timestamps (never build-time stamps). `public/robots.txt` carries the `Sitemap:` directive. The old static `public/sitemap.xml` was removed when the server route shipped. When guides exist, add their entries to the route's `entries` array — no sitemap index until 50+ URLs.
 
 ## 12. robots.txt requirements
 
 Current file is fine (`Allow: /` for all major bots + wildcard). Requirements going forward:
 
 - Keep `Allow: /` — every route is public and indexable.
-- No `Sitemap:` directive until a real domain exists (relative sitemap URLs are invalid in robots.txt).
+- `Sitemap: https://fast-image-to-pdf.lovable.app/sitemap.xml` directive is live (domain is set).
 - If staging/preview ever needs blocking, do it via `noindex` on the environment, not a wildcard `Disallow` here.
 
 ## 13. Anti-doorway rules (permanent)
@@ -204,7 +200,7 @@ Current file is fine (`Allow: /` for all major bots + wildcard). Requirements go
 
 ## 14. Rollout order
 
-1. **`/webp-to-pdf`** — tool already supports WebP; KD 23 quick win. Add unique explainer + FAQ + related-converters module (§8.2) in the same change.
+1. ~~**`/webp-to-pdf`**~~ — **done**: shipped with unique explainer + FAQ, WebApplication/FAQPage/BreadcrumbList schema, visible breadcrumbs, related-converters module (§8.2), and hub links from header/footer/home.
 2. **HEIC decoding (WASM, dynamically imported)** → then **`/heic-to-pdf`** — biggest demand/difficulty ratio (40.5k @ KD 36).
 3. **Guides**: launch set from §9, starting with the two 5.4k-volume how-tos.
 4. Revisit `/image-compressor` only after the PDF cluster ranks — it's a new product, not a page.
