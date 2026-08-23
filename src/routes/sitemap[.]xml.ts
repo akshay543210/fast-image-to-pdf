@@ -2,33 +2,48 @@ import { createFileRoute } from "@tanstack/react-router";
 import type {} from "@tanstack/react-start";
 import { SITE_URL } from "@/lib/seo";
 
-interface SitemapEntry {
-  path: string;
-  changefreq?: "always" | "hourly" | "daily" | "weekly" | "monthly" | "yearly" | "never";
-  priority?: string;
+/**
+ * Dynamic sitemap: routes are discovered at build time from the actual
+ * files in src/routes via Vite's import.meta.glob. Adding a new public
+ * page automatically adds its canonical URL here — no manual edits.
+ *
+ * Excluded automatically:
+ * - pathless layouts (__root, _foo) and the root index segment
+ * - dynamic params ($id) — no canonical URL without data
+ * - escaped-dot utility routes (sitemap[.]xml) and any bracketed segments
+ * - /api/* server routes (they are .ts handlers, not .tsx pages)
+ */
+const routeModules = import.meta.glob("./**/*.tsx");
+
+function fileToPublicPath(file: string): string | null {
+  const rel = file.replace(/^\.\//, "").replace(/\.tsx$/, "");
+  const segments = rel.split("/");
+  if (
+    segments.some(
+      (s) => s.startsWith("_") || s.startsWith("$") || s.includes("[") || s.includes("]"),
+    )
+  ) {
+    return null;
+  }
+  const path = "/" + segments.filter((s) => s !== "index").join("/");
+  return path.replace(/\/+$/, "") || "/";
+}
+
+function publicPaths(): string[] {
+  const paths = new Set<string>();
+  for (const file of Object.keys(routeModules)) {
+    const p = fileToPublicPath(file);
+    if (p) paths.add(p);
+  }
+  return [...paths].sort((a, b) => (a === "/" ? -1 : b === "/" ? 1 : a.localeCompare(b)));
 }
 
 export const Route = createFileRoute("/sitemap.xml")({
   server: {
     handlers: {
       GET: async () => {
-        const entries: SitemapEntry[] = [
-          { path: "/", changefreq: "weekly", priority: "1.0" },
-          { path: "/jpg-to-pdf", changefreq: "monthly", priority: "0.9" },
-          { path: "/png-to-pdf", changefreq: "monthly", priority: "0.9" },
-          { path: "/webp-to-pdf", changefreq: "monthly", priority: "0.9" },
-        ];
-
-        const urls = entries.map((e) =>
-          [
-            `  <url>`,
-            `    <loc>${SITE_URL}${e.path}</loc>`,
-            e.changefreq ? `    <changefreq>${e.changefreq}</changefreq>` : null,
-            e.priority ? `    <priority>${e.priority}</priority>` : null,
-            `  </url>`,
-          ]
-            .filter(Boolean)
-            .join("\n"),
+        const urls = publicPaths().map(
+          (path) => `  <url>\n    <loc>${SITE_URL}${path === "/" ? "/" : path}</loc>\n  </url>`,
         );
 
         const xml = [
@@ -40,7 +55,7 @@ export const Route = createFileRoute("/sitemap.xml")({
 
         return new Response(xml, {
           headers: {
-            "Content-Type": "application/xml",
+            "Content-Type": "application/xml; charset=utf-8",
             "Cache-Control": "public, max-age=3600",
           },
         });
