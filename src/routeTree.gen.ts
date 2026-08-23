@@ -12,6 +12,8 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as JpgToPdfRouteImport } from './routes/jpg-to-pdf'
 import { Route as PngToPdfRouteImport } from './routes/png-to-pdf'
+import { Route as SitemapDotxmlRouteImport } from './routes/sitemap[.]xml'
+import { Route as WebpToPdfRouteImport } from './routes/webp-to-pdf'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -28,35 +30,60 @@ const PngToPdfRoute = PngToPdfRouteImport.update({
   path: '/png-to-pdf',
   getParentRoute: () => rootRouteImport,
 } as any)
+const SitemapDotxmlRoute = SitemapDotxmlRouteImport.update({
+  id: '/sitemap.xml',
+  path: '/sitemap.xml',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const WebpToPdfRoute = WebpToPdfRouteImport.update({
+  id: '/webp-to-pdf',
+  path: '/webp-to-pdf',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/jpg-to-pdf': typeof JpgToPdfRoute
   '/png-to-pdf': typeof PngToPdfRoute
+  '/sitemap.xml': typeof SitemapDotxmlRoute
+  '/webp-to-pdf': typeof WebpToPdfRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/jpg-to-pdf': typeof JpgToPdfRoute
   '/png-to-pdf': typeof PngToPdfRoute
+  '/sitemap.xml': typeof SitemapDotxmlRoute
+  '/webp-to-pdf': typeof WebpToPdfRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/jpg-to-pdf': typeof JpgToPdfRoute
   '/png-to-pdf': typeof PngToPdfRoute
+  '/sitemap.xml': typeof SitemapDotxmlRoute
+  '/webp-to-pdf': typeof WebpToPdfRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/jpg-to-pdf' | '/png-to-pdf'
+  fullPaths:
+    '/' | '/jpg-to-pdf' | '/png-to-pdf' | '/sitemap.xml' | '/webp-to-pdf'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/jpg-to-pdf' | '/png-to-pdf'
-  id: '__root__' | '/' | '/jpg-to-pdf' | '/png-to-pdf'
+  to: '/' | '/jpg-to-pdf' | '/png-to-pdf' | '/sitemap.xml' | '/webp-to-pdf'
+  id:
+    | '__root__'
+    | '/'
+    | '/jpg-to-pdf'
+    | '/png-to-pdf'
+    | '/sitemap.xml'
+    | '/webp-to-pdf'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   JpgToPdfRoute: typeof JpgToPdfRoute
   PngToPdfRoute: typeof PngToPdfRoute
+  SitemapDotxmlRoute: typeof SitemapDotxmlRoute
+  WebpToPdfRoute: typeof WebpToPdfRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -82,6 +109,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof PngToPdfRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/sitemap.xml': {
+      id: '/sitemap.xml'
+      path: '/sitemap.xml'
+      fullPath: '/sitemap.xml'
+      preLoaderRoute: typeof SitemapDotxmlRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/webp-to-pdf': {
+      id: '/webp-to-pdf'
+      path: '/webp-to-pdf'
+      fullPath: '/webp-to-pdf'
+      preLoaderRoute: typeof WebpToPdfRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
@@ -89,6 +130,8 @@ const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   JpgToPdfRoute: JpgToPdfRoute,
   PngToPdfRoute: PngToPdfRoute,
+  SitemapDotxmlRoute: SitemapDotxmlRoute,
+  WebpToPdfRoute: WebpToPdfRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
