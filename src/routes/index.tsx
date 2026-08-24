@@ -156,8 +156,9 @@ function HomePage() {
                 Add as many images as you need — every image becomes one page of the finished PDF,
                 so you can merge images to PDF in any order. Drag files in, browse your device, or
                 paste straight from the clipboard, then drag the thumbnails (or use the arrow
-                buttons) until the pages are in the right order. Sideways photos can be rotated in
-                90° steps without leaving the page.
+                buttons) until the pages are in the right order. Each time you add an image to a
+                PDF batch it gets its own page, and sideways photos can be rotated in 90° steps
+                without leaving the page.
               </p>
               <p>
                 Pick A4 or US Letter with margins for printing, or "Fit to image" for pages that
