@@ -5,16 +5,22 @@ const STEPS = [
     icon: Images,
     title: "Add your images",
     text: "Drop files, browse your device, or paste from the clipboard. JPG, PNG, WebP and GIF all work.",
+    image: "/images/image-to-pdf-converter-add-images.webp",
+    alt: "Adding photos to the ImageToPDF image to PDF converter drop zone",
   },
   {
     icon: SlidersHorizontal,
     title: "Arrange and adjust",
     text: "Reorder pages, rotate images, and pick a page size, orientation, margin and quality.",
+    image: "/images/image-to-pdf-converter-arrange-pages.webp",
+    alt: "Reordering and rotating pages before converting an image to PDF",
   },
   {
     icon: FileDown,
     title: "Download your PDF",
     text: "The PDF is built right in your browser and saved straight to your device. Nothing is uploaded.",
+    image: "/images/image-to-pdf-converter-download-pdf.webp",
+    alt: "Downloading the finished PDF from the free image to PDF converter",
   },
 ] as const;
 
@@ -31,6 +37,15 @@ export function HowItWorks({ heading = "Three steps. Ten seconds." }: { heading?
               key={step.title}
               className="rounded-xl border-2 border-ink/70 bg-card p-5 shadow-hard-sm"
             >
+              <img
+                src={step.image}
+                alt={step.alt}
+                width={800}
+                height={600}
+                loading="lazy"
+                decoding="async"
+                className="mb-4 aspect-[4/3] w-full rounded-lg border-2 border-ink/60 object-cover"
+              />
               <div className="flex items-center gap-3">
                 <span className="flex h-10 w-10 items-center justify-center rounded-lg border-2 border-ink bg-accent">
                   <step.icon className="h-5 w-5" aria-hidden="true" />

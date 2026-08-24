@@ -11,7 +11,7 @@ import { OG_IMAGE, SITE_URL } from "@/lib/seo";
 
 const TITLE = "Image to PDF Converter — Free & Private | ImageToPDF";
 const DESCRIPTION =
-  "Convert images to PDF online for free. Combine JPG, PNG, WebP and GIF into one PDF, reorder pages, adjust settings — processed in your browser, never uploaded.";
+  "Free online image to PDF converter. Combine JPG, PNG, WebP and GIF into one PDF, reorder pages, adjust quality — processed in your browser, never uploaded.";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -53,6 +53,20 @@ export const Route = createFileRoute("/")({
             name: item.question,
             acceptedAnswer: { "@type": "Answer", text: item.answer },
           })),
+        }),
+      },
+      {
+        type: "application/ld+json",
+        children: JSON.stringify({
+          "@context": "https://schema.org",
+          "@type": "VideoObject",
+          name: "How to convert images to PDF with ImageToPDF",
+          description:
+            "A short demo of the free ImageToPDF image to PDF converter: add images, arrange the pages, and download a PDF — all in the browser, with no upload.",
+          thumbnailUrl: `${SITE_URL}/images/image-to-pdf-converter-demo-poster.webp`,
+          uploadDate: "2026-08-24",
+          duration: "PT15S",
+          contentUrl: `${SITE_URL}/videos/image-to-pdf-converter-demo.mp4`,
         }),
       },
     ],
@@ -98,7 +112,7 @@ function HomePage() {
               Image to PDF <span className="text-primary">Converter</span>
             </>
           }
-          description="Drop in your photos, arrange the pages, and download a clean PDF. Free, unlimited, and completely private — everything happens in your browser."
+          description="The free online image to PDF converter that's completely private. Drop in your photos, arrange the pages, and download one clean PDF — no upload, no signup, no watermark."
         />
 
         <section aria-label="Image to PDF converter" className="mx-auto max-w-5xl px-4 pb-16 sm:px-6">
@@ -109,17 +123,41 @@ function HomePage() {
 
         <HowItWorks heading="How to convert images to PDF" />
 
-        <section aria-labelledby="multi-image" className="border-t-2 border-ink/70">
+        <section aria-labelledby="demo-video" className="border-t-2 border-ink/70">
+          <div className="mx-auto max-w-3xl px-4 py-14 sm:px-6">
+            <h2 id="demo-video" className="text-center text-2xl font-bold sm:text-3xl">
+              Watch it in action
+            </h2>
+            <p className="mx-auto mt-4 max-w-xl text-center text-sm leading-relaxed text-muted-foreground sm:text-base">
+              A fifteen-second look at how to convert image to PDF online: three photos in, pages
+              rearranged, one PDF out — without anything leaving the browser.
+            </p>
+            <div className="mt-8 overflow-hidden rounded-2xl border-2 border-ink shadow-hard">
+              <video
+                controls
+                preload="none"
+                poster="/images/image-to-pdf-converter-demo-poster.webp"
+                className="aspect-video w-full bg-card"
+              >
+                <source src="/videos/image-to-pdf-converter-demo.mp4" type="video/mp4" />
+                Your browser doesn't support the video tag — the steps above show the same process.
+              </video>
+            </div>
+          </div>
+        </section>
+
+        <section aria-labelledby="multi-image" className="border-t-2 border-ink/70 bg-secondary/50">
           <div className="mx-auto max-w-3xl px-4 py-14 sm:px-6">
             <h2 id="multi-image" className="text-2xl font-bold sm:text-3xl">
-              Convert multiple images into one PDF
+              Merge images into one PDF
             </h2>
             <div className="mt-4 space-y-3 text-sm leading-relaxed text-muted-foreground sm:text-base">
               <p>
-                Add as many images as you need — every image becomes one page of the finished PDF.
-                Drag files in, browse your device, or paste straight from the clipboard, then drag
-                the thumbnails (or use the arrow buttons) until the pages are in the right order.
-                Sideways photos can be rotated in 90° steps without leaving the page.
+                Add as many images as you need — every image becomes one page of the finished PDF,
+                so you can merge images to PDF in any order. Drag files in, browse your device, or
+                paste straight from the clipboard, then drag the thumbnails (or use the arrow
+                buttons) until the pages are in the right order. Sideways photos can be rotated in
+                90° steps without leaving the page.
               </p>
               <p>
                 Pick A4 or US Letter with margins for printing, or "Fit to image" for pages that
@@ -130,14 +168,14 @@ function HomePage() {
           </div>
         </section>
 
-        <section aria-labelledby="supported-formats" className="border-t-2 border-ink/70 bg-secondary/50">
+        <section aria-labelledby="supported-formats" className="border-t-2 border-ink/70">
           <div className="mx-auto max-w-3xl px-4 py-14 sm:px-6">
             <h2 id="supported-formats" className="text-2xl font-bold sm:text-3xl">
               Supported image formats
             </h2>
             <p className="mt-4 text-sm leading-relaxed text-muted-foreground sm:text-base">
-              The converter handles the four image formats you're most likely to have on your
-              phone or computer — and you can mix them freely in a single PDF.
+              This image converter to PDF handles the four formats you're most likely to have on
+              your phone or computer — and you can mix them freely in a single PDF.
             </p>
             <ul className="mt-6 grid gap-4 sm:grid-cols-2">
               {FORMATS.map((format) => (
@@ -172,10 +210,10 @@ function HomePage() {
             </h2>
             <div className="mt-4 space-y-3 text-sm leading-relaxed text-muted-foreground sm:text-base">
               <p>
-                Yes — ImageToPDF is free to use, with no account, no watermark and no page limits.
-                Because your images are converted on your own device instead of on a server, there
-                are no storage or processing costs to pass on to you. That also means no waiting
-                in a queue behind other people's files.
+                Yes — with ImageToPDF you convert image to PDF free: no account, no watermark and
+                no page limits. This free image to PDF maker converts your images on your own
+                device instead of on a server, so there are no storage or processing costs to pass
+                on to you. That also means no waiting in a queue behind other people's files.
               </p>
             </div>
           </div>
