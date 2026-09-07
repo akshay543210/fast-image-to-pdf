@@ -91,10 +91,15 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
     ],
     links: [
       { rel: "stylesheet", href: appCss },
-      { rel: "icon", type: "image/x-icon", href: "/favicon.ico" },
-      { rel: "icon", type: "image/svg+xml", href: "/favicon.svg" },
-      { rel: "icon", type: "image/png", sizes: "64x64", href: "/favicon.png" },
-      { rel: "apple-touch-icon", href: "/apple-touch-icon.png" },
+      {
+        rel: "icon",
+        type: "image/png",
+        sizes: "48x48",
+        href: "/imagetopdf-icon-v2-48.png",
+      },
+      { rel: "icon", type: "image/svg+xml", href: "/imagetopdf-icon-v2.svg" },
+      { rel: "shortcut icon", type: "image/x-icon", href: "/favicon.ico?v=2" },
+      { rel: "apple-touch-icon", sizes: "192x192", href: "/imagetopdf-icon-v2-192.png" },
       { rel: "preconnect", href: "https://fonts.googleapis.com" },
       { rel: "preconnect", href: "https://fonts.gstatic.com", crossOrigin: "anonymous" },
       {
@@ -110,7 +115,7 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
           "@type": "Organization",
           name: SITE_NAME,
           url: SITE_URL,
-          logo: `${SITE_URL}/favicon.svg`,
+          logo: `${SITE_URL}/imagetopdf-icon-v2-192.png`,
         }),
       },
       {
